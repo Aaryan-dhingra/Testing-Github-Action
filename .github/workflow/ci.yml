@@ -1,0 +1,38 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Trigger when code is pushed to the "main" branch
+  pull_request:
+    branches:
+      - main  # Trigger when a pull request is made to "main"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Use Ubuntu for the runner
+
+    steps:
+      # Step 1: Check out the code from the GitHub repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Node.js (if you are using Node.js)
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  # Specify your Node.js version
+
+      # Step 3: Install dependencies (e.g., npm install)
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Run tests (for example, with npm test)
+      - name: Run tests
+        run: npm test
+
+      # Step 5: Deploy to production (optional, you can skip this if no deployment is needed)
+      - name: Deploy to Production
+        run: npm run deploy  # You can customize this for your deploy process
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}  # Use secrets for sensitive data
